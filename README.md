@@ -1,24 +1,12 @@
 # Trickle
 
-TODO: Write a gem description
+A command-line tool to run commands specified in a file or multiple files. You can specify different rates to run the commands. See trickle --help for details. Originally created to run test scripts at random intervals.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-    gem 'trickle'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install trickle
-
-## Usage
-
-TODO: Write usage instructions here
+```
+gem install trickle
+```
 
 ## Contributing
 
