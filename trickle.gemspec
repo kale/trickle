@@ -8,8 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = Trickle::VERSION
   spec.authors       = ["Kale Davis"]
   spec.email         = ["kale@kaledavis.com"]
-  spec.summary       = %q()
-  spec.homepage      = ""
+  spec.summary       = %q(Run commands specified within files at different rates)
+  spec.description   = spec.summary
+  spec.homepage      = "https://github.com/kale/trickle"
   spec.license       = "MIT"
 
   spec.bindir = 'bin'
