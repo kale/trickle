@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+# Usage: trickle [--within=<minutes> | --rate=<# per minute> | --now] <file>"
+
+require 'trickle'
+
+app = Trickle::Trickle.new(*ARGV)
+app.run
