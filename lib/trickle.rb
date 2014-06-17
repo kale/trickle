@@ -71,10 +71,10 @@ module Trickle
     def parsed_options?
       @opts = OptionParser.new
       @opts.banner = 'Usage: trickle [options] file ...'
-      @opts.on('-t', '--within x', 'Run all commands randomly within x minutes') {|within| @config.mode = :within; @config.within = within.to_i}
-      @opts.on('-r', '--rate x', 'Run all commands at the rate of x commands per minute') {|rate| @config.mode = :rate; @config.rate = rate.to_i}
-      @opts.on('-n', '--now', 'Run all commands now (default)') {@config.mode = :now}
-      @opts.on('-v', '--verbose', 'Output command that is being ran') {@config.verbose = true}
+      @opts.on('--within x', 'Run all commands randomly within x minutes') {|within| @config.mode = :within; @config.within = within.to_i}
+      @opts.on('--rate x', 'Run all commands at the rate of x commands per minute') {|rate| @config.mode = :rate; @config.rate = rate.to_i}
+      @opts.on('--now', 'Run all commands now (default)') {@config.mode = :now}
+      @opts.on('--verbose', 'Output command that is being ran') {@config.verbose = true}
       @opts.on('--random', 'Run through commands in random order') {@config.random = true}
       @opts.parse!(@args) rescue return false
 
