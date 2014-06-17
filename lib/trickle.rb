@@ -11,6 +11,7 @@ module Trickle
       @config.mode = :now
       @config.input = []
       @config.verbose = false
+      @config.no_run = false
       @config.random = false
     end
 
@@ -34,19 +35,20 @@ module Trickle
 
     def run_all
       @config.input.each do |line|
-        display_running_cmd(line)
-        puts `#{line}`
+        run_and_or_display(line)
       end
     end
 
     def run_schedule(within)
       @threads = []
+      mutex = Mutex.new
 
       @config.input.each do |line|
         @threads << Thread.new do
-          sleep(rand(60*within))
-          display_running_cmd(line)
-          puts `#{line}`
+            sleep(rand(60*within))
+          mutex.synchronize do
+            run_and_or_display(line)
+          end
         end
       end
 
@@ -56,16 +58,25 @@ module Trickle
 
     def run_every(rate)
       @config.input.each do |line|
-        display_running_cmd(line)
-        puts `#{line}`
+        run_and_or_display(line)
         sleep(60.0/rate)
       end
     end
 
     protected
 
-    def display_running_cmd(line)
-      puts "Running: #{line}" if @config.verbose
+    def verbose(line)
+      print "#{Time.now} - '#{line.strip}': "
+    end
+
+    def run_and_or_display(line)
+      verbose(line) if @config.verbose
+
+      if @config.no_run
+        puts "#{line}"
+      else
+        puts `#{line}`
+      end
     end
 
     def parsed_options?
@@ -75,6 +86,7 @@ module Trickle
       @opts.on('--rate x', 'Run all commands at the rate of x commands per minute') {|rate| @config.mode = :rate; @config.rate = rate.to_i}
       @opts.on('--now', 'Run all commands now (default)') {@config.mode = :now}
       @opts.on('--verbose', 'Output command that is being ran') {@config.verbose = true}
+      @opts.on('--no-run', 'Only display commands, do not execute them') {@config.no_run = true}
       @opts.on('--random', 'Run through commands in random order') {@config.random = true}
       @opts.parse!(@args) rescue return false
 
