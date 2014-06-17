@@ -11,10 +11,14 @@ module Trickle
       @config.mode = :now
       @config.input = []
       @config.verbose = false
+      @config.random = false
     end
 
     def run
       if parsed_options? && arguments_valid?
+
+        @config.input.shuffle! if @config.random
+
         case @config.mode
         when :within
           run_schedule(@config.within)
@@ -71,6 +75,7 @@ module Trickle
       @opts.on('-r', '--rate x', 'Run all commands at the rate of x commands per minute') {|rate| @config.mode = :rate; @config.rate = rate.to_i}
       @opts.on('-n', '--now', 'Run all commands now (default)') {@config.mode = :now}
       @opts.on('-v', '--verbose', 'Output command that is being ran') {@config.verbose = true}
+      @opts.on('--random', 'Run through commands in random order') {@config.random = true}
       @opts.parse!(@args) rescue return false
 
       if $stdin.tty?
